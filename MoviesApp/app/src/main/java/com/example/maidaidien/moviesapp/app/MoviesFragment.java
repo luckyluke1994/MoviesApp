@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.example.maidaidien.moviesapp.app.adapter.MovieAdapter;
@@ -33,7 +34,7 @@ import java.util.List;
 /**
  * Created by mai.dai.dien on 10/01/2017.
  */
-public class MoviesFragment extends Fragment{
+public class MoviesFragment extends Fragment implements AdapterView.OnItemClickListener {
     private List<Movie> mMovies = new ArrayList<>();
     private MovieAdapter mMovieAdapter;
 
@@ -73,7 +74,12 @@ public class MoviesFragment extends Fragment{
         mMovieAdapter = new MovieAdapter(getActivity(), mMovies);
         GridView gridView = (GridView) rootView.findViewById(R.id.movies_gridview);
         gridView.setAdapter(mMovieAdapter);
+        gridView.setOnItemClickListener(this);
         return rootView;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
     }
 
     public class FetchMoviesTask extends AsyncTask<Void, Void, List<Movie>> {
