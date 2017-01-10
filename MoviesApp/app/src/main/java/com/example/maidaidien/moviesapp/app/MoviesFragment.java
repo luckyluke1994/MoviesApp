@@ -89,6 +89,8 @@ public class MoviesFragment extends Fragment implements AdapterView.OnItemClickL
             // These are the names of the JSON objects that need to be extracted.
             final String MDB_RESULT_ARRAY = "results";
             final String MDB_POSTER_PATH = "poster_path";
+            final String MDB_ORIGINAL_TITLE = "original_title";
+            final String MDB_RATED = "vote_average";
             final String MDB_ID = "id";
 
             JSONObject forecastJson = new JSONObject(movieJsonStr);
@@ -100,6 +102,8 @@ public class MoviesFragment extends Fragment implements AdapterView.OnItemClickL
                 JSONObject movieObject = movieArray.getJSONObject(index);
                 movie.setMovieId(movieObject.getInt(MDB_ID));
                 movie.setMoviePosterPath(movieObject.getString(MDB_POSTER_PATH));
+                movie.setOriginalTitle(movieObject.getString(MDB_ORIGINAL_TITLE));
+                movie.setRated(movieObject.getDouble(MDB_RATED));
                 results.add(movie);
             }
 

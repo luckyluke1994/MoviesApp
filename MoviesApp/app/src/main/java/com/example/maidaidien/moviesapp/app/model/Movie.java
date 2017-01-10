@@ -8,6 +8,8 @@ import java.io.Serializable;
 public class Movie implements Serializable {
     private int mMovieId;
     private String mMoviePosterPath;
+    private String mOriginalTitle;
+    private Double mRated;
 
     public Movie() {}
 
@@ -25,5 +27,21 @@ public class Movie implements Serializable {
 
     public void setMoviePosterPath(String moviePosterPath) {
         mMoviePosterPath = moviePosterPath;
+    }
+
+    public String getOriginalTitle() {
+        return mOriginalTitle;
+    }
+
+    public void setOriginalTitle(String originalTitle) {
+        mOriginalTitle = originalTitle;
+    }
+
+    public Double getRated() {
+        return mRated;
+    }
+
+    public void setRated(Double rated) {
+        mRated = rated;
     }
 }
