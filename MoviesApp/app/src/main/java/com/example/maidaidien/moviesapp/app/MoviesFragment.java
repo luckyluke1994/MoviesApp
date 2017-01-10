@@ -12,8 +12,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
+
+import com.example.maidaidien.moviesapp.app.adapter.MovieAdapter;
+import com.example.maidaidien.moviesapp.app.model.Movie;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,11 +27,16 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by mai.dai.dien on 10/01/2017.
  */
 public class MoviesFragment extends Fragment{
+    private List<Movie> mMovies = new ArrayList<>();
+    private MovieAdapter mMovieAdapter;
+
     public MoviesFragment() {}
 
     @Override
@@ -56,62 +67,42 @@ public class MoviesFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        String[] data = {
-            "Mon 6/23 - Sunny - 31/17",
-            "Tue 6/24 - Foggy - 21/8",
-            "Wed 6/25 - Cloudy - 22/17",
-            "Thurs 6/26 - Rainy - 18/11",
-            "Fri 6/27 - Foggy - 21/10",
-            "Sat 6/28 - TRAPPED IN WEATHERSTATION - 23/18",
-            "Sun 6/29 - Sunny - 20/7",
-            "Mon 6/23 - Sunny - 31/17",
-            "Tue 6/24 - Foggy - 21/8",
-            "Wed 6/25 - Cloudy - 22/17",
-            "Thurs 6/26 - Rainy - 18/11",
-            "Fri 6/27 - Foggy - 21/10",
-            "Sat 6/28 - TRAPPED IN WEATHERSTATION - 23/18",
-            "Sun 6/29 - Sunny - 20/7",
-            "Mon 6/23 - Sunny - 31/17",
-            "Tue 6/24 - Foggy - 21/8",
-            "Wed 6/25 - Cloudy - 22/17",
-            "Thurs 6/26 - Rainy - 18/11",
-            "Fri 6/27 - Foggy - 21/10",
-            "Sat 6/28 - TRAPPED IN WEATHERSTATION - 23/18",
-            "Sun 6/29 - Sunny - 20/7",
-            "Mon 6/23 - Sunny - 31/17",
-            "Tue 6/24 - Foggy - 21/8",
-            "Wed 6/25 - Cloudy - 22/17",
-            "Thurs 6/26 - Rainy - 18/11",
-            "Fri 6/27 - Foggy - 21/10",
-            "Sat 6/28 - TRAPPED IN WEATHERSTATION - 23/18",
-            "Sun 6/29 - Sunny - 20/7",
-            "Mon 6/23 - Sunny - 31/17",
-            "Tue 6/24 - Foggy - 21/8",
-            "Wed 6/25 - Cloudy - 22/17",
-            "Thurs 6/26 - Rainy - 18/11",
-            "Fri 6/27 - Foggy - 21/10",
-            "Sat 6/28 - TRAPPED IN WEATHERSTATION - 23/18",
-            "Sun 6/29 - Sunny - 20/7"
-        };
 
         View rootView = inflater.inflate(R.layout.fragment_movies, container, false);
-        ArrayAdapter<String> moviesAdapter =
-            new ArrayAdapter<String>(
-                getActivity(),
-                R.layout.list_item_movie,
-                R.id.title,
-                data
-            );
+
+        mMovieAdapter = new MovieAdapter(getActivity(), mMovies);
         GridView gridView = (GridView) rootView.findViewById(R.id.movies_gridview);
-        gridView.setAdapter(moviesAdapter);
+        gridView.setAdapter(mMovieAdapter);
         return rootView;
     }
 
-    public class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
+    public class FetchMoviesTask extends AsyncTask<Void, Void, List<Movie>> {
         public final String LOG_TAG = FetchMoviesTask.class.getSimpleName();
 
+        private List<Movie> getMovieDataFromJson(String movieJsonStr) throws JSONException{
+            List<Movie> results = new ArrayList<>();
+            // These are the names of the JSON objects that need to be extracted.
+            final String MDB_RESULT_ARRAY = "results";
+            final String MDB_POSTER_PATH = "poster_path";
+            final String MDB_ID = "id";
+
+            JSONObject forecastJson = new JSONObject(movieJsonStr);
+            JSONArray movieArray = forecastJson.getJSONArray(MDB_RESULT_ARRAY);
+
+            int length = movieArray.length();
+            for (int index = 0; index < length; index++) {
+                Movie movie = new Movie();
+                JSONObject movieObject = movieArray.getJSONObject(index);
+                movie.setMovieId(movieObject.getInt(MDB_ID));
+                movie.setMoviePosterPath(movieObject.getString(MDB_POSTER_PATH));
+                results.add(movie);
+            }
+
+            return results;
+        }
+
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected List<Movie> doInBackground(Void... voids) {
             // These two need to be declared outside the try/catch
             // so that they can be closed in the finally block.
             HttpURLConnection urlConnection = null;
@@ -178,8 +169,20 @@ public class MoviesFragment extends Fragment{
                     }
                 }
             }
+            try {
+                return getMovieDataFromJson(moviesJsonStr);
+            } catch (JSONException e) {
+                Log.e(LOG_TAG, "Error Json: ", e);
+                return null;
+            }
+        }
 
-            return null;
+        @Override
+        protected void onPostExecute(List<Movie> movies) {
+            if (movies == null) return;
+            mMovies.clear();
+            mMovies.addAll(movies);
+            mMovieAdapter.notifyDataSetChanged();
         }
     }
 }
