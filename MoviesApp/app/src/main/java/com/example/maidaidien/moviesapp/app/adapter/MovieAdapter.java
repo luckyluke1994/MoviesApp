@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.maidaidien.moviesapp.app.R;
 import com.example.maidaidien.moviesapp.app.model.Movie;
@@ -43,7 +44,11 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
         }
 
         ImageView posterImageView = (ImageView) rootView.findViewById(R.id.poster_imageview);
+        TextView originalTitle = (TextView) rootView.findViewById(R.id.original_title_textview);
+        TextView ratedTextView = (TextView) rootView.findViewById(R.id.rated_textview);
         Picasso.with(getContext()).load(uri.toString()).into(posterImageView);
+        originalTitle.setText(movie.getOriginalTitle());
+        ratedTextView.setText(Double.toString(movie.getRated()));
         return rootView;
     }
 }
