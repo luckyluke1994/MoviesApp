@@ -35,7 +35,6 @@ import java.util.List;
  * Created by mai.dai.dien on 10/01/2017.
  */
 public class MoviesFragment extends Fragment implements AdapterView.OnItemClickListener {
-    private List<Movie> mMovies = new ArrayList<>();
     private MovieAdapter mMovieAdapter;
 
     public MoviesFragment() {}
@@ -71,7 +70,7 @@ public class MoviesFragment extends Fragment implements AdapterView.OnItemClickL
 
         View rootView = inflater.inflate(R.layout.fragment_movies, container, false);
 
-        mMovieAdapter = new MovieAdapter(getActivity(), mMovies);
+        mMovieAdapter = new MovieAdapter(getActivity(), new ArrayList<Movie>());
         GridView gridView = (GridView) rootView.findViewById(R.id.movies_gridview);
         gridView.setAdapter(mMovieAdapter);
         gridView.setOnItemClickListener(this);
@@ -186,9 +185,8 @@ public class MoviesFragment extends Fragment implements AdapterView.OnItemClickL
         @Override
         protected void onPostExecute(List<Movie> movies) {
             if (movies == null) return;
-            mMovies.clear();
-            mMovies.addAll(movies);
-            mMovieAdapter.notifyDataSetChanged();
+            mMovieAdapter.clear();
+            mMovieAdapter.addAll(movies);
         }
     }
 }
