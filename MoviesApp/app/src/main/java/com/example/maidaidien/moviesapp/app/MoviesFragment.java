@@ -2,9 +2,11 @@ package com.example.maidaidien.moviesapp.app;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -101,10 +103,15 @@ public class MoviesFragment extends Fragment implements AdapterView.OnItemClickL
 
     private void updateDataFromInternet() {
         mProgressDialog.show();
-        new FetchMoviesTask().execute();
+        SharedPreferences sharedPrefs =
+            PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String sort_option = sharedPrefs.getString(
+            getString(R.string.pref_sort_order_key),
+            getString(R.string.pref_popular_value));
+        new FetchMoviesTask().execute(sort_option);
     }
 
-    public class FetchMoviesTask extends AsyncTask<Void, Void, List<Movie>> {
+    public class FetchMoviesTask extends AsyncTask<String, Void, List<Movie>> {
         public final String LOG_TAG = FetchMoviesTask.class.getSimpleName();
 
         private List<Movie> getMovieDataFromJson(String movieJsonStr) throws JSONException{
@@ -134,7 +141,7 @@ public class MoviesFragment extends Fragment implements AdapterView.OnItemClickL
         }
 
         @Override
-        protected List<Movie> doInBackground(Void... voids) {
+        protected List<Movie> doInBackground(String... params) {
             // These two need to be declared outside the try/catch
             // so that they can be closed in the finally block.
             HttpURLConnection urlConnection = null;
@@ -148,10 +155,11 @@ public class MoviesFragment extends Fragment implements AdapterView.OnItemClickL
                 // Possible parameters are avaiable at OWM's forecast API page, at
                 // http://openweathermap.org/API#forecast
                 final String MOVIES_BASE_URL =
-                    "https://api.themoviedb.org/3/movie/popular?";
+                    "https://api.themoviedb.org/3/movie/";
                 final String APPID_PARAM = "api_key";
 
                 Uri builtUri = Uri.parse(MOVIES_BASE_URL).buildUpon()
+                    .appendPath(params[0])
                     .appendQueryParameter(APPID_PARAM, BuildConfig.THE_MOVIE_DB_KEY)
                     .build();
 
