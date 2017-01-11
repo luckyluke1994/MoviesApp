@@ -1,5 +1,6 @@
 package com.example.maidaidien.moviesapp.app;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -79,6 +80,8 @@ public class MoviesFragment extends Fragment implements AdapterView.OnItemClickL
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        Intent intent = new Intent(getActivity(), DetailActivity.class);
+        startActivity(intent);
     }
 
     public class FetchMoviesTask extends AsyncTask<Void, Void, List<Movie>> {
