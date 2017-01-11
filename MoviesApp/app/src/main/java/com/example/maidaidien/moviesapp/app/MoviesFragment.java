@@ -58,7 +58,7 @@ public class MoviesFragment extends Fragment implements AdapterView.OnItemClickL
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_refresh) {
-            new FetchMoviesTask().execute();
+            updateDataFromInternet();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -82,6 +82,16 @@ public class MoviesFragment extends Fragment implements AdapterView.OnItemClickL
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Intent intent = new Intent(getActivity(), DetailActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        updateDataFromInternet();
+    }
+
+    private void updateDataFromInternet() {
+        new FetchMoviesTask().execute();
     }
 
     public class FetchMoviesTask extends AsyncTask<Void, Void, List<Movie>> {
