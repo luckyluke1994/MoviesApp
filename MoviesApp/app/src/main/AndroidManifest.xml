@@ -2,7 +2,10 @@
 <manifest package="com.example.maidaidien.moviesapp.app"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- For connect to internet -->
     <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- For check network information -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:allowBackup="true"
