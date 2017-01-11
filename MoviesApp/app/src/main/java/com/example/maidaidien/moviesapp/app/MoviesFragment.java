@@ -62,7 +62,9 @@ public class MoviesFragment extends Fragment implements AdapterView.OnItemClickL
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_refresh) {
-            updateDataFromInternet();
+            if (Utils.isOnline(getActivity())) {
+                updateDataFromInternet();
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -91,7 +93,10 @@ public class MoviesFragment extends Fragment implements AdapterView.OnItemClickL
     @Override
     public void onStart() {
         super.onStart();
-        updateDataFromInternet();
+        // if network is available
+        if (Utils.isOnline(getActivity())) {
+            updateDataFromInternet();
+        }
     }
 
     private void updateDataFromInternet() {
