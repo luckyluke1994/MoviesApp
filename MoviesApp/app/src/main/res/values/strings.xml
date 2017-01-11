@@ -4,4 +4,11 @@
     <string name="hello_world">Hello World</string>
     <string name="action_refresh" translatable="false">Refresh</string>
     <string name="action_settings" translatable="false">Settings</string>
+    <string name="pref_sort_order_label">Sort Order</string>
+    <string name="pref_sort_order_key">sort</string>
+    <string name="pref_label_popular">Popular</string>
+    <string name="pref_label_top_rated">Top rated</string>
+    <string name="pref_popular_value">popular</string>
+    <string name="pref_top_rated_value">top_rated</string>
+    <string name="settings_title">Settings</string>
 </resources>
