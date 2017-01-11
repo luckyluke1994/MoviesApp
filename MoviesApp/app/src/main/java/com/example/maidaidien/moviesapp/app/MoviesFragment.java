@@ -1,5 +1,6 @@
 package com.example.maidaidien.moviesapp.app;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -37,6 +38,7 @@ import java.util.List;
  */
 public class MoviesFragment extends Fragment implements AdapterView.OnItemClickListener {
     private MovieAdapter mMovieAdapter;
+    private ProgressDialog mProgressDialog;
 
     public MoviesFragment() {}
 
@@ -44,6 +46,8 @@ public class MoviesFragment extends Fragment implements AdapterView.OnItemClickL
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        mProgressDialog = new ProgressDialog(getActivity(), R.style.TransparentDialogTheme);
+        mProgressDialog.setCanceledOnTouchOutside(false);
     }
 
     @Override
@@ -91,6 +95,7 @@ public class MoviesFragment extends Fragment implements AdapterView.OnItemClickL
     }
 
     private void updateDataFromInternet() {
+        mProgressDialog.show();
         new FetchMoviesTask().execute();
     }
 
@@ -201,6 +206,7 @@ public class MoviesFragment extends Fragment implements AdapterView.OnItemClickL
 
         @Override
         protected void onPostExecute(List<Movie> movies) {
+            mProgressDialog.dismiss();
             if (movies == null) return;
             mMovieAdapter.clear();
             mMovieAdapter.addAll(movies);
