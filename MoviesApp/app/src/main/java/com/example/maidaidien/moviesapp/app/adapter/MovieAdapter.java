@@ -1,7 +1,6 @@
 package com.example.maidaidien.moviesapp.app.adapter;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.maidaidien.moviesapp.app.R;
+import com.example.maidaidien.moviesapp.app.Utils;
 import com.example.maidaidien.moviesapp.app.model.Movie;
 import com.squareup.picasso.Picasso;
 
@@ -29,13 +29,7 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
         Movie movie = getItem(i);
         if (movie == null) return view;
 
-        final String MOVIE_POSTER_PATH_BASE_URL =
-            "http://image.tmdb.org/t/p/";
-        final String MOVIE_POSTER_SIZE = "w185";
-        Uri uri = Uri.parse(MOVIE_POSTER_PATH_BASE_URL).buildUpon()
-            .appendPath(MOVIE_POSTER_SIZE)
-            .appendEncodedPath(movie.getMoviePosterPath())
-            .build();
+        String imageUrl = Utils.getImagePath(movie.getMoviePosterPath());
 
         View rootView = view;
         if (rootView == null) {
@@ -46,7 +40,7 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
         ImageView posterImageView = (ImageView) rootView.findViewById(R.id.poster_imageview);
         TextView originalTitle = (TextView) rootView.findViewById(R.id.original_title_textview);
         TextView ratedTextView = (TextView) rootView.findViewById(R.id.rated_textview);
-        Picasso.with(getContext()).load(uri.toString()).into(posterImageView);
+        Picasso.with(getContext()).load(imageUrl).into(posterImageView);
         originalTitle.setText(movie.getOriginalTitle());
         ratedTextView.setText(Double.toString(movie.getRated()));
         return rootView;
