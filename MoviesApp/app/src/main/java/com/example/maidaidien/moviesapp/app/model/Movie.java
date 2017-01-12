@@ -9,7 +9,10 @@ public class Movie implements Serializable {
     private int mMovieId;
     private String mMoviePosterPath;
     private String mOriginalTitle;
+    private String mOverview;
+    private String mReleaseDate;
     private Double mRated;
+    private long mVoteCount;
 
     public Movie() {}
 
@@ -43,5 +46,29 @@ public class Movie implements Serializable {
 
     public void setRated(Double rated) {
         mRated = rated;
+    }
+
+    public String getOverview() {
+        return mOverview;
+    }
+
+    public void setOverview(String overview) {
+        mOverview = overview;
+    }
+
+    public String getReleaseDate() {
+        return mReleaseDate;
+    }
+
+    public void setReleaseDate(String releaseDate) {
+        mReleaseDate = releaseDate;
+    }
+
+    public long getVoteCount() {
+        return mVoteCount;
+    }
+
+    public void setVoteCount(long voteCount) {
+        mVoteCount = voteCount;
     }
 }
