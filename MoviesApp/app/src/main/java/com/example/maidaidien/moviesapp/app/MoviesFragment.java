@@ -122,6 +122,9 @@ public class MoviesFragment extends Fragment implements AdapterView.OnItemClickL
             final String MDB_ORIGINAL_TITLE = "original_title";
             final String MDB_RATED = "vote_average";
             final String MDB_ID = "id";
+            final String MDB_OVERVIEW = "overview";
+            final String MDB_RELEASE_DATE = "release_date"; // example: 2016-06-18
+            final String MDB_VOTE_COUNT = "vote_count";
 
             JSONObject forecastJson = new JSONObject(movieJsonStr);
             JSONArray movieArray = forecastJson.getJSONArray(MDB_RESULT_ARRAY);
@@ -134,6 +137,9 @@ public class MoviesFragment extends Fragment implements AdapterView.OnItemClickL
                 movie.setMoviePosterPath(movieObject.getString(MDB_POSTER_PATH));
                 movie.setOriginalTitle(movieObject.getString(MDB_ORIGINAL_TITLE));
                 movie.setRated(movieObject.getDouble(MDB_RATED));
+                movie.setOverview(movieObject.getString(MDB_OVERVIEW));
+                movie.setReleaseDate(movieObject.getString(MDB_RELEASE_DATE));
+                movie.setVoteCount(movieObject.getLong(MDB_VOTE_COUNT));
                 results.add(movie);
             }
 
