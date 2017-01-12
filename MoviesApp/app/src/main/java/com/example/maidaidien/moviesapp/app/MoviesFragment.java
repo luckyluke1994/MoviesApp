@@ -39,6 +39,7 @@ import java.util.List;
  * Created by mai.dai.dien on 10/01/2017.
  */
 public class MoviesFragment extends Fragment implements AdapterView.OnItemClickListener {
+    public static final String MOVIE_EXTRA_TEXT = "movie";
     private MovieAdapter mMovieAdapter;
     private ProgressDialog mProgressDialog;
 
@@ -88,7 +89,11 @@ public class MoviesFragment extends Fragment implements AdapterView.OnItemClickL
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        Movie movie = mMovieAdapter.getItem(i);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(MOVIE_EXTRA_TEXT, movie);
         Intent intent = new Intent(getActivity(), DetailActivity.class);
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 
@@ -119,6 +124,7 @@ public class MoviesFragment extends Fragment implements AdapterView.OnItemClickL
             // These are the names of the JSON objects that need to be extracted.
             final String MDB_RESULT_ARRAY = "results";
             final String MDB_POSTER_PATH = "poster_path";
+            final String MDB_BACKDROP_PATH = "backdrop_path";
             final String MDB_ORIGINAL_TITLE = "original_title";
             final String MDB_RATED = "vote_average";
             final String MDB_ID = "id";
@@ -135,6 +141,7 @@ public class MoviesFragment extends Fragment implements AdapterView.OnItemClickL
                 JSONObject movieObject = movieArray.getJSONObject(index);
                 movie.setMovieId(movieObject.getInt(MDB_ID));
                 movie.setMoviePosterPath(movieObject.getString(MDB_POSTER_PATH));
+                movie.setMovieBackdropPath(movieObject.getString(MDB_BACKDROP_PATH));
                 movie.setOriginalTitle(movieObject.getString(MDB_ORIGINAL_TITLE));
                 movie.setRated(movieObject.getDouble(MDB_RATED));
                 movie.setOverview(movieObject.getString(MDB_OVERVIEW));

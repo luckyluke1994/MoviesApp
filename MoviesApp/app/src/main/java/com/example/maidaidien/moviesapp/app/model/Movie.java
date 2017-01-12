@@ -8,6 +8,7 @@ import java.io.Serializable;
 public class Movie implements Serializable {
     private int mMovieId;
     private String mMoviePosterPath;
+    private String mMovieBackdropPath;
     private String mOriginalTitle;
     private String mOverview;
     private String mReleaseDate;
@@ -30,6 +31,14 @@ public class Movie implements Serializable {
 
     public void setMoviePosterPath(String moviePosterPath) {
         mMoviePosterPath = moviePosterPath;
+    }
+
+    public String getMovieBackdropPath() {
+        return mMovieBackdropPath;
+    }
+
+    public void setMovieBackdropPath(String movieBackdropPath) {
+        mMovieBackdropPath = movieBackdropPath;
     }
 
     public String getOriginalTitle() {
